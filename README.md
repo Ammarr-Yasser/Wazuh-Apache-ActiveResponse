@@ -14,7 +14,7 @@ This repository contains a compact lab to deploy a Wazuh SIEM (manager + indexer
 - **VM2 — Apache Web Server**: Ubuntu host with Apache and Wazuh agent installed.  
 - **VM3 — Attacker**: Linux host used to generate HTTP requests to the Apache server.
 
-<img width="700" height="384" alt="image" src="https://github.com/user-attachments/assets/041bbdcd-7e89-44c9-9b19-ff56c670d3f8" />
+<img width="1050" height="576" alt="image" src="https://github.com/user-attachments/assets/041bbdcd-7e89-44c9-9b19-ff56c670d3f8" />
 
 
 ## Goals
