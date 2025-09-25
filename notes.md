@@ -15,7 +15,6 @@ sudo systemctl status apache2
 curl http://<WEB_IP>
 Wazuh Agent (Web VM)
 ```bash
-Copy code
 # Check agent service status
 sudo systemctl status wazuh-agent
 
@@ -27,7 +26,6 @@ sudo tail -n 100 /var/ossec/logs/ossec.log
 ```
 Wazuh Manager (Manager VM)
 ```bash
-Copy code
 # Check manager service
 sudo systemctl status wazuh-manager
 
@@ -48,7 +46,6 @@ Username: admin
 Password: printed at install time or inside the installer bundle:
 
 ```bash
-Copy code
 sudo tar -O -xvf wazuh-install-files.tar wazuh-install-files/wazuh-passwords.txt
 ```
 Common Problems & Remedies
@@ -58,7 +55,6 @@ Verify agent ↔ manager network connectivity (firewall, security groups, etc).
 Inspect logs on both sides:
 
 ```bash
-Copy code
 # On agent
 sudo tail -n 100 /var/ossec/logs/ossec.log
 
@@ -67,7 +63,6 @@ sudo tail -n 100 /var/ossec/logs/ossec.log
 ```
 Active Response not blocking the attacker
 ```bash
-Copy code
 # Look for custom rule hits in alerts
 sudo grep "100100" /var/ossec/logs/alerts/alerts.log || true
 
@@ -85,7 +80,6 @@ This is normal for a lab install. Accept the exception or replace the certificat
 
 Prevent accidental upgrades in a lab
 ```bash
-Copy code
 # Debian/Ubuntu
 sudo sed -i "s/^deb /#deb /" /etc/apt/sources.list.d/wazuh.list 2>/dev/null || true
 
@@ -119,7 +113,6 @@ Network interface down (ens33 shows no IP after reboot)
 If ip address shows the interface but no inet address, follow these recovery steps.
 
 ```bash
-Copy code
 # Show link state and all addresses
 ip link show ens33
 ip addr show
@@ -139,7 +132,6 @@ ip -4 addr show dev ens33
 Alternative (NetworkManager):
 
 ```bash
-Copy code
 sudo nmcli device set ens33 managed yes
 sudo nmcli device connect ens33
 nmcli -g IP4.ADDRESS device show ens33
@@ -147,14 +139,12 @@ nmcli -g IP4.ADDRESS device show ens33
 Alternative (netplan on Ubuntu):
 
 ```bash
-Copy code
 sudo netplan apply
 ip addr show ens33
 ```
 If still failing, inspect logs:
 
 ```bash
-Copy code
 sudo journalctl -u NetworkManager -n 200 --no-pager || true
 sudo journalctl -u systemd-networkd -n 200 --no-pager || true
 sudo tail -n 200 /var/log/syslog
