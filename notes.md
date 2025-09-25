@@ -7,35 +7,43 @@ Quick reference of commands and checks for the Wazuh + Apache + Attacker lab. Co
 ## Verification Commands
 
 ### Apache (Web VM)
-```bash
+
 # Check apache service status
+```bash
 sudo systemctl status apache2
 ```
 # Confirm HTTP page returns content (replace <WEB_IP>)
 curl http://<WEB_IP>
 Wazuh Agent (Web VM)
-```bash
+
 # Check agent service status
+```bash
 sudo systemctl status wazuh-agent
-
+```
 # Restart agent after config changes
+```bash
 sudo systemctl restart wazuh-agent
-
+```
 # Tail recent agent log entries
+```bash
 sudo tail -n 100 /var/ossec/logs/ossec.log
 ```
 Wazuh Manager (Manager VM)
-```bash
+
 # Check manager service
+```bash
 sudo systemctl status wazuh-manager
-
+```
 # Restart manager if needed
+```bash
 sudo systemctl restart wazuh-manager
-
+```
 # Show recent alerts
+```bash
 sudo tail -n 200 /var/ossec/logs/alerts/alerts.log
-
+```
 # Show manager log
+```bash
 sudo tail -n 100 /var/ossec/logs/ossec.log
 ```
 Wazuh Dashboard
@@ -54,36 +62,44 @@ Verify agent ↔ manager network connectivity (firewall, security groups, etc).
 
 Inspect logs on both sides:
 
-```bash
-# On agent
-sudo tail -n 100 /var/ossec/logs/ossec.log
 
+# On agent
+```bash
+sudo tail -n 100 /var/ossec/logs/ossec.log
+```
 # On manager
+```bash
 sudo tail -n 100 /var/ossec/logs/ossec.log
 ```
 Active Response not blocking the attacker
-```bash
+
 # Look for custom rule hits in alerts
+```bash
 sudo grep "100100" /var/ossec/logs/alerts/alerts.log || true
-
-# Confirm CDB file exists
-ls -l /var/ossec/etc/lists/blacklist-alienvault
-
-# Ensure correct ownership
-sudo chown wazuh:wazuh /var/ossec/etc/lists/blacklist-alienvault || true
-
-# List available active-response scripts
-ls -l /var/ossec/active-response/bin/
-Self-signed TLS warning in browser
 ```
+# Confirm CDB file exists
+```bash
+ls -l /var/ossec/etc/lists/blacklist-alienvault
+```
+# Ensure correct ownership
+```bash
+sudo chown wazuh:wazuh /var/ossec/etc/lists/blacklist-alienvault || true
+``` 
+# List available active-response scripts
+```bash
+ls -l /var/ossec/active-response/bin/
+```
+Self-signed TLS warning in browser
 This is normal for a lab install. Accept the exception or replace the certificate with one issued by a trusted CA.
 
 Prevent accidental upgrades in a lab
-```bash
-# Debian/Ubuntu
-sudo sed -i "s/^deb /#deb /" /etc/apt/sources.list.d/wazuh.list 2>/dev/null || true
 
+# Debian/Ubuntu
+```bash
+sudo sed -i "s/^deb /#deb /" /etc/apt/sources.list.d/wazuh.list 2>/dev/null || true
+```
 # RHEL/CentOS
+```bash
 sudo sed -i "s/^enabled=1/enabled=0/" /etc/yum.repos.d/wazuh.repo 2>/dev/null || true
 ```
 Running this lab on the cloud (if local resources are constrained)
@@ -112,21 +128,24 @@ Limit open ports via security groups/VPC rules to the bare minimum needed.
 Network interface down (ens33 shows no IP after reboot)
 If ip address shows the interface but no inet address, follow these recovery steps.
 
-```bash
 # Show link state and all addresses
+```bash
 ip link show ens33
 ip addr show
 bash
-Copy code
+```
 # Bring interface up
+```bash
 sudo ip link set ens33 up
 bash
-Copy code
+```
 # Request DHCP lease (verbose)
+```bash
 sudo dhclient -v ens33
 bash
-Copy code
+```
 # Verify IPv4 address assigned
+```bash
 ip -4 addr show dev ens33
 ```
 Alternative (NetworkManager):
